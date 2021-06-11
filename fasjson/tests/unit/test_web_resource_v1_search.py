@@ -3,7 +3,7 @@ from functools import partial
 import pytest
 
 from fasjson.lib.ldap.client import LDAPResult
-from fasjson.tests.unit.utils import get_user_ldap_data, get_user_api_output
+from fasjson.tests.unit.utils import get_user_api_output, get_user_ldap_data
 
 
 @pytest.fixture
