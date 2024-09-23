@@ -23,12 +23,13 @@ RUN dnf install -y \
         python3-pip && \
     dnf autoremove -y && \
     dnf clean all -y
+RUN rm -f /etc/krb5.conf && ln -sf /etc/krb5/krb5.conf /etc/krb5.conf && \
+    rm -f /etc/openldap/ldap.conf && ln -sf /etc/ipa/ldap.conf /etc/openldap/ldap.conf
 RUN python3 -m venv /opt/venv
 RUN poetry config virtualenvs.create false
 COPY ./ /opt/fasjson
 ENV VIRTUAL_ENV=/opt/venv
 RUN cd /opt/fasjson && poetry install --only main
-RUN rm -f /etc/krb5.conf && ln -sf /etc/krb5/krb5.conf /etc/krb5.conf && \
-    rm -f /etc/openldap/ldap.conf && ln -sf /etc/ipa/ldap.conf /etc/openldap/ldap.conf
+RUN chgrp -R 0 /opt && chmod -R g+rwX /opt
 EXPOSE 8080
 ENTRYPOINT bash /opt/fasjson/deploy/start.sh
